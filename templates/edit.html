@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}编辑产品{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto; background: white; padding: 2rem; border-radius: 30px;">
+    <h2 style="margin-bottom: 1.5rem;">✏️ 编辑产品</h2>
+    <form method="POST">
+        <div class="form-group">
+            <label>产品名 *</label>
+            <input type="text" name="name" value="{{ product.name }}" required>
+        </div>
+        <div class="form-group">
+            <label>描述</label>
+            <textarea name="description" rows="3">{{ product.description or '' }}</textarea>
+        </div>
+        <div class="form-group">
+            <label>价格 *</label>
+            <input type="number" step="0.01" name="price" value="{{ product.price }}" required>
+        </div>
+        <div class="form-group">
+            <label>分类</label>
+            <select name="category">
+                <option value="面包" {% if product.category == '面包' %}selected{% endif %}>🍞 面包</option>
+                <option value="蛋糕" {% if product.category == '蛋糕' %}selected{% endif %}>🎂 蛋糕</option>
+                <option value="饮品" {% if product.category == '饮品' %}selected{% endif %}>🥤 饮品</option>
+                <option value="其他" {% if product.category == '其他' %}selected{% endif %}>✨ 其他</option>
+            </select>
+        </div>
+        <div class="form-group checkbox-group">
+            <label><input type="checkbox" name="is_hot" {% if product.is_hot %}checked{% endif %}> 🔥 热门产品</label>
+            <label><input type="checkbox" name="is_new" {% if product.is_new %}checked{% endif %}> ✨ 新品</label>
+        </div>
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-primary">保存修改</button>
+            <a href="{{ url_for('admin') }}" class="btn" style="background: #ccc; color: #333;">取消</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

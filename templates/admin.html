@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}管理后台{% endblock %}
+
+{% block content %}
+<div style="background: white; padding: 2rem; border-radius: 30px; margin-bottom: 2rem;">
+    <h2 style="margin-bottom: 1.5rem;">➕ 添加新产品</h2>
+    <form method="POST" action="{{ url_for('add') }}">
+        <div class="form-group">
+            <label>产品名 *</label>
+            <input type="text" name="name" required>
+        </div>
+        <div class="form-group">
+            <label>描述</label>
+            <textarea name="description" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label>价格 *</label>
+            <input type="number" step="0.01" name="price" required>
+        </div>
+        <div class="form-group">
+            <label>分类</label>
+            <select name="category">
+                <option value="面包">🍞 面包</option>
+                <option value="蛋糕">🎂 蛋糕</option>
+                <option value="饮品">🥤 饮品</option>
+                <option value="其他">✨ 其他</option>
+            </select>
+        </div>
+        <div class="form-group checkbox-group">
+            <label><input type="checkbox" name="is_hot"> 🔥 热门产品</label>
+            <label><input type="checkbox" name="is_new"> ✨ 新品</label>
+        </div>
+        <button type="submit" class="btn btn-primary">添加产品</button>
+    </form>
+</div>
+
+<h2>📋 现有产品列表</h2>
+<table class="admin-table">
+    <thead>
+        <tr><th>ID</th><th>名称</th><th>价格</th><th>分类</th><th>热门</th><th>新品</th><th>操作</th></tr>
+    </thead>
+    <tbody>
+        {% for p in products %}
+        <tr>
+            <td>{{ p.id }}</td>
+            <td><strong>{{ p.name }}</strong></td>
+            <td>¥ {{ "%.2f"|format(p.price) }}</td>
+            <td>{{ p.category }}</td>
+            <td>{% if p.is_hot %}🔥{% else %}—{% endif %}</td>
+            <td>{% if p.is_new %}✨{% else %}—{% endif %}</td>
+            <td>
+                <a href="{{ url_for('edit', id=p.id) }}" class="btn btn-sm btn-primary" style="margin-right: 0.5rem;">编辑</a>
+                <a href="{{ url_for('delete', id=p.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('确定删除 {{ p.name }} 吗？')">删除</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

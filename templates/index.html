@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}首页{% endblock %}
+
+{% block content %}
+<div class="sort-bar">
+    <span style="font-weight: 500;">🍞 推荐排序：</span>
+    <a href="{{ url_for('index', sort='default') }}" class="sort-link {% if sort == 'default' %}active{% endif %}">全部</a>
+    <a href="{{ url_for('index', sort='hot') }}" class="sort-link {% if sort == 'hot' %}active{% endif %}">🔥 热门</a>
+    <a href="{{ url_for('index', sort='new') }}" class="sort-link {% if sort == 'new' %}active{% endif %}">✨ 新品</a>
+    <a href="{{ url_for('index', sort='price_asc') }}" class="sort-link {% if sort == 'price_asc' %}active{% endif %}">💰 价格升序</a>
+    <a href="{{ url_for('index', sort='price_desc') }}" class="sort-link {% if sort == 'price_desc' %}active{% endif %}">💰 价格降序</a>
+</div>
+
+<div class="product-grid">
+    {% for product in products %}
+    <div class="card" onclick="window.location.href='{{ url_for('product', id=product.id) }}'">
+        <div class="card-image">
+            🥐
+        </div>
+        <div class="card-content">
+            <div class="card-title">
+                {% if product.is_hot %}<span class="badge badge-hot">热门</span>{% endif %}
+                {% if product.is_new %}<span class="badge badge-new">新品</span>{% endif %}
+                {{ product.name }}
+            </div>
+            <div class="card-desc">{{ product.description[:50] }}{% if product.description|length > 50 %}...{% endif %}</div>
+            <div class="card-price">¥ {{ "%.2f"|format(product.price) }} <small>/ 份</small></div>
+        </div>
+    </div>
+    {% else %}
+    <p>暂无产品，请先在后台添加~</p>
+    {% endfor %}
+</div>
+{% endblock %}

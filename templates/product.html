@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div style="display: flex; gap: 3rem; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 250px; background: #F5E6D3; border-radius: 30px; display: flex; align-items: center; justify-content: center; font-size: 8rem;">
+        🥖
+    </div>
+    <div style="flex: 2;">
+        <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">
+            {% if product.is_hot %}<span class="badge badge-hot">热门</span>{% endif %}
+            {% if product.is_new %}<span class="badge badge-new">新品</span>{% endif %}
+            {{ product.name }}
+        </h1>
+        <p style="font-size: 1.1rem; color: #666; margin-bottom: 1.5rem;">{{ product.description }}</p>
+        <div class="card-price" style="font-size: 2rem; margin-bottom: 1rem;">¥ {{ "%.2f"|format(product.price) }}</div>
+        <div class="sort-bar" style="display: inline-flex; background: none; padding: 0;">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">← 返回首页</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
